@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MYTHOS VAULT // EAGLER SHARDS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+
+body {
+    margin: 0;
+    background: radial-gradient(circle at center, #050510, #000);
+    color: #b7f7ff;
+    font-family: 'Orbitron', monospace;
+    overflow-x: hidden;
+}
+
+/* STARFIELD */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    z-index: 0;
+}
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.6;
+    animation: drift 10s linear infinite;
+}
+@keyframes drift {
+    from { transform: translateY(0px); }
+    to { transform: translateY(100vh); }
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+header h1 {
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px #00f7ff;
+}
+
+header p {
+    opacity: 0.7;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+/* SHARD CARD */
+.card {
+    background: rgba(10, 20, 30, 0.5);
+    border: 1px solid rgba(0,255,255,0.2);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00f7ff;
+}
+
+/* glitch flicker */
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0,255,255,0.1), transparent);
+    transform: translateX(-100%);
+}
+
+.card:hover::after {
+    animation: sweep 0.6s linear;
+}
+
+@keyframes sweep {
+    100% { transform: translateX(100%); }
+}
+
+.tag {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.title {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+/* SECTION TITLES */
+.section-title{
+    position: relative;
+    margin: 80px 40px 30px;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: #dffcff;
+    text-transform: uppercase;
+
+    text-shadow:
+        0 0 8px #00e5ff,
+        0 0 20px rgba(0,229,255,.5);
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* glowing line */
+.section-title::after{
+    content:"";
+    flex:1;
+    height:1px;
+
+    background:
+    linear-gradient(
+        to right,
+        rgba(0,255,255,.8),
+        rgba(0,255,255,.05)
+    );
+
+    box-shadow:
+        0 0 10px cyan;
+}
+.card{
+    background: rgba(10,20,30,.55);
+    border: 1px solid rgba(0,255,255,.15);
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    backdrop-filter: blur(10px);
+
+    transition: .3s;
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+.card:hover{
+    transform:
+        translateY(-8px)
+        scale(1.03);
+
+    border-color: rgba(0,255,255,.8);
+
+    box-shadow:
+        0 0 25px cyan,
+        inset 0 0 30px rgba(0,255,255,.1);
+}.title{
+    color:white;
+    font-size:18px;
+    letter-spacing:2px;
+
+    margin-bottom:12px;
+
+    text-shadow:
+        0 0 10px #00f7ff;
+}.tag{
+    color:#8bb7c4;
+
+    font-size:13px;
+
+    opacity:.8;
+
+    line-height:1.5;
+}.download-title{
+    color:#b6fff3;
+}
+
+.remote-title{
+    color:#a4c8ff;
+}
+
+.repo-title{
+    color:#ffca85;
+}
+
+.forbidden-title{
+    color:#ff6666;
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<header>
+    <h1>MYTHOS VAULT</h1>
+    <p>Eaglercraft Shard Archive // unstable client memory index</p>
+</header>
+
+<h2 class="section-title">🜂 Downloaded Shards</h2>
+
+<div class="grid" id="localGrid"></div>
+
+<h2 class="section-title">🌐 Remote Nodes</h2>
+
+<div class="grid" id="remoteGrid"></div>
+
+<h2 class="section-title">📚 Repository Archives</h2>
+
+<div class="grid" id="repoGrid"></div>
+
+<script>
+// STAR GENERATION
+const starContainer = document.getElementById("stars");
+for (let i = 0; i < 120; i++) {
+    let s = document.createElement("div");
+    s.className = "star";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.top = Math.random() * 100 + "vh";
+    s.style.animationDuration = (5 + Math.random() * 20) + "s";
+    starContainer.appendChild(s);
+}
+
+const localShards = [
+{
+    name: "Prismwake // Echo 1.12 Core",
+    tag: "stable // baseline reconstruction",
+    url: "downloads/PixelClient%201.12.2%20WASM.html"
+},
+{
+    name: "Astra Fracture // Modern Drift Node",
+    tag: "social bleed // experimental layer",
+    url: "downloads/MClient/wasm.modernclient.online.html"
+},
+{
+    name: "Obsidian Index // Shadow Fork Archive",
+    tag: "render anomaly // unstable visuals",
+    url: "downloads/Tuff_Client_Offline_WASM.html"
+},
+{
+    name: "Celestial Rift // Astra Archive",
+    tag: "forgotten reconstruction",
+    url: "downloads/astrawasmoffline.html"
+},
+{
+    name: "Crimson Resent // V5 Fragment",
+    tag: "combat layer // active shard",
+    url: "downloads/ResentClient5.1.html"
+}
+];
+// these are the current github links for each: https://github.com/Elite4r/Resent-Client/releases, https://astraclientorg.github.io/, https://eaglercraft-sites.carrd.co/, https://github.com/zumbiepig/Starlike-Client,https://github.com/TuffNetwork/Tuff-Client-Builds/releases,https://www.reddit.com/r/eaglercraft/comments/1j9ursr/links_for_pixel_client/, https://www.pixelclient.xyz/
+const remoteShards = [
+{
+    name: "Nocturne Veil // Shadow Node",
+    tag: "external node // active",
+    url: "https://irv77.github.io/AmplerLauncher/mc/shadowclient/"
+},
+{
+    name: "Starlight Bloom // JS Constellation",
+    tag: "javascript branch // external",
+    url: "https://eaglercraft.dev/clients/Starlike%20Client%200.4.2%20JS/"
+}
+];
+const repoShards = [
+{
+    name: "Crimson Resent Repository",
+    tag: "github archive",
+    url: "https://github.com/Elite4r/Resent-Client/releases"
+},
+{
+    name: "Celestial Rift Repository",
+    tag: "github archive",
+    url: "https://astraclientorg.github.io/"
+},
+{
+    name: "Starlight Bloom Repository",
+    tag: "github archive",
+    url: "https://github.com/zumbiepig/Starlike-Client"
+},
+{
+    name: "Shadow Codex // Generation IV",
+    tag: "sealed archive // historical reconstruction",
+    url: "https://github.com/PeytonPlayz595/Shadow-4.0"
+},
+{
+    name: "Obsidian Index Repository",
+    tag: "github archive",
+    url: "https://github.com/TuffNetwork/Tuff-Client-Builds/releases"
+},
+{
+    name: "Prismwake Repository",
+    tag: "community archive",
+    url: "https://www.pixelclient.xyz/"
+}
+];
+// BUILD GRID
+
+   function populateGrid(id, array) {
+
+    const grid = document.getElementById(id);
+
+    array.forEach(shard => {
+
+        let card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <div class="title">${shard.name}</div>
+            <div class="tag">${shard.tag}</div>
+        `;
+
+        card.onclick = () => {
+            window.open(shard.url, "_blank");
+        };
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+populateGrid("localGrid", localShards);
+populateGrid("remoteGrid", remoteShards);
+populateGrid("repoGrid", repoShards);
+</script>
+
+</body>
+</html>
